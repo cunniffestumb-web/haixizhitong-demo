@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* High Performance HMI / ISA-101 Matte Dark Slate Palette */
+  --bg-deep-navy: #070d17;
+  --bg-canvas: #070d17;
+  --bg-panel: #0b1523;
+  --bg-panel-hover: #101d30;
+  --bg-panel-border: rgba(148, 163, 184, 0.14);
+  --bg-card: rgba(15, 25, 40, 0.9);
+  
+  /* Industrial Accent & Exception-Based Colors */
+  --cyan-neon: #0ea5e9; /* Sky blue active accent */
+  --cyan-dim: #0284c7;
+  --cyan-glow: none;
+  --emerald-neon: #10b981; /* Status Nominal / Passed */
+  --amber-neon: #f59e0b;   /* Warning / Underexposure Exception */
+  --red-neon: #ef4444;     /* Critical Alarm / E-Stop */
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  --font-mono: 'Consolas', 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Industrial Precision Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(11, 21, 35, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.45);
+}
+
+/* Matte Industrial Panels */
+.cockpit-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--bg-panel-border);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Precision Tabular Numbers */
+.digital-value {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: #f1f5f9;
+}
+
+/* Active Highlight Pill */
+.active-pill {
+  border-left: 3px solid var(--cyan-neon);
+  background: rgba(14, 165, 233, 0.08);
+}
+
+/* Crisp Category Tags */
+.tag-echinus {
+  background: rgba(14, 165, 233, 0.12);
+  border: 1px solid rgba(14, 165, 233, 0.4);
+  color: #38bdf8;
+}
+.tag-holothurian {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+}
+.tag-scallop {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+.tag-starfish {
+  background: rgba(244, 63, 94, 0.12);
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  color: #fb7185;
+}
+
+/* Shutter Flash Animation for Real-Time Capture */
+@keyframes shutterFlash {
+  0% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+.shutter-flash {
+  position: absolute;
+  inset: 0;
+  background-color: white;
+  pointer-events: none;
+  z-index: 50;
+  animation: shutterFlash 0.35s ease-out forwards;
+}
+
+/* Industrial Alert Glow (Subtle, Non-Distracting) */
+@keyframes subtlePulseAlert {
+  0%, 100% { border-color: rgba(245, 158, 11, 0.35); }
+  50% { border-color: rgba(245, 158, 11, 0.85); }
+}
+
+.warning-pulse {
+  animation: subtlePulseAlert 2s ease-in-out infinite;
+}
+
+/* Print Styles for Scientific Survey Report */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .report-page-container {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+  .report-section {
+    page-break-inside: avoid;
+  }
+}
