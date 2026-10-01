@@ -22,6 +22,7 @@ import {
   SELF_CHECK_ITEMS,
   DEFAULT_MODEL_CONFIG,
 } from '../constants/mockData';
+import { getAssetUrl } from '../utils/assetUrl';
 
 interface MissionState {
   platformMode: PlatformMode;
@@ -353,7 +354,7 @@ export const useMissionStore = create<MissionState>((set, get) => ({
       id: 'IMG-S02-RECAPTURE',
       siteId: 'S02',
       filename: '001_000002_recaptured.jpg',
-      url: '/samples/urpc/001_000002.jpg',
+      url: getAssetUrl('/samples/urpc/001_000002.jpg'),
       timestamp: new Date().toTimeString().slice(0, 8),
       exposure: 0.82,
       sharpness: 0.84,
@@ -465,20 +466,20 @@ export const useMissionStore = create<MissionState>((set, get) => ({
 
     const isS02Dark = siteId === 'S02' && telemetry.lightLeft < 60;
 
-    let targetUrl = '/samples/urpc/000_000001.jpg';
+    let targetUrl = getAssetUrl('/samples/urpc/000_000001.jpg');
     let targetDetections: DetectionBox[] = [];
 
     if (siteId === 'S01') {
-      targetUrl = '/samples/urpc/000_000001.jpg';
+      targetUrl = getAssetUrl('/samples/urpc/000_000001.jpg');
       targetDetections = INITIAL_IMAGES[0]?.detections || [];
     } else if (siteId === 'S02') {
-      targetUrl = isS02Dark ? '/samples/urpc/000_000007.jpg' : '/samples/urpc/001_000002.jpg';
+      targetUrl = isS02Dark ? getAssetUrl('/samples/urpc/000_000007.jpg') : getAssetUrl('/samples/urpc/001_000002.jpg');
       targetDetections = isS02Dark ? [
         { id: `d-dark-1`, category: '海胆', confidence: 0.58, box: [780, 520, 160, 160], source: 'model', reviewStatus: 'unreviewed' },
         { id: `d-dark-2`, category: '海参', confidence: 0.52, box: [1200, 680, 180, 90], source: 'model', reviewStatus: 'unreviewed' },
       ] : (INITIAL_IMAGES[2]?.detections || []);
     } else if (siteId === 'S03') {
-      targetUrl = '/samples/urpc/000_000003.jpg';
+      targetUrl = getAssetUrl('/samples/urpc/002_000003.jpg');
       targetDetections = INITIAL_IMAGES[3]?.detections || [
         { id: 'd-301', category: '海星', confidence: 0.93, box: [640, 240, 260, 240], source: 'model', reviewStatus: 'unreviewed' },
         { id: 'd-302', category: '海胆', confidence: 0.88, box: [480, 620, 150, 140], source: 'model', reviewStatus: 'unreviewed' },

@@ -1,4 +1,5 @@
 import { Mission, CapturedImage, TelemetryData, Thruster, SelfCheckItem, ModelConfig, RecaptureEvent } from '../types';
+import { getAssetUrl } from '../utils/assetUrl';
 
 export const INITIAL_MISSION: Mission = {
   id: 'HX-ROV-20261001-A01',
@@ -70,7 +71,7 @@ export const INITIAL_IMAGES: CapturedImage[] = [
     id: 'IMG-S01-01',
     siteId: 'S01',
     filename: '000_000001.jpg',
-    url: '/samples/urpc/000_000001.jpg',
+    url: getAssetUrl('/samples/urpc/000_000001.jpg'),
     timestamp: '09:28:15',
     exposure: 0.72,
     sharpness: 0.81,
@@ -99,7 +100,7 @@ export const INITIAL_IMAGES: CapturedImage[] = [
     id: 'IMG-S02-DARK',
     siteId: 'S02',
     filename: '001_000002_underexposed.jpg',
-    url: '/samples/urpc/001_000002_underexposed.jpg',
+    url: getAssetUrl('/samples/urpc/001_000002_underexposed.jpg'),
     timestamp: '09:36:20',
     exposure: 0.22,
     sharpness: 0.45,
@@ -119,7 +120,7 @@ export const INITIAL_IMAGES: CapturedImage[] = [
     id: 'IMG-S02-RECAPTURE',
     siteId: 'S02',
     filename: '001_000002_recaptured.jpg',
-    url: '/samples/urpc/001_000002.jpg',
+    url: getAssetUrl('/samples/urpc/001_000002.jpg'),
     timestamp: '09:39:42',
     exposure: 0.78,
     sharpness: 0.84,
@@ -149,7 +150,7 @@ export const INITIAL_IMAGES: CapturedImage[] = [
     id: 'IMG-S03-01',
     siteId: 'S03',
     filename: '003_000004.jpg',
-    url: '/samples/urpc/003_000004.jpg',
+    url: getAssetUrl('/samples/urpc/003_000004.jpg'),
     timestamp: '09:48:02',
     exposure: 0.74,
     sharpness: 0.82,

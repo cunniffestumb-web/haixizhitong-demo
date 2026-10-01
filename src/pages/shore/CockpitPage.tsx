@@ -1,5 +1,6 @@
 import React from 'react';
 import { useMissionStore } from '../../stores/missionStore';
+import { getAssetUrl } from '../../utils/assetUrl';
 import { CockpitVideoOverlay } from '../../components/hud/CockpitVideoOverlay';
 import { AttitudeIndicator } from '../../components/hud/AttitudeIndicator';
 import { ThrusterVisualizer } from '../../components/hud/ThrusterVisualizer';
@@ -315,7 +316,7 @@ export const CockpitPage: React.FC = () => {
                           : 'border-[rgba(148,163,184,0.18)] opacity-75 hover:opacity-100'
                       }`}
                     >
-                      <img src={img.url} alt={img.filename} className="w-full h-full object-cover" />
+                      <img src={getAssetUrl(img.url)} alt={img.filename} className="w-full h-full object-cover" />
                       <div className="absolute top-0 left-0 bg-[#0b1523]/90 px-1 text-[9px] text-white font-mono">
                         {img.siteId}
                       </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMissionStore } from '../../stores/missionStore';
+import { getAssetUrl } from '../../utils/assetUrl';
 import { Modal, Progress, Tag, Button, Alert } from 'antd';
 import {
   AlertTriangle,
@@ -76,7 +77,7 @@ export const RecaptureModal: React.FC = () => {
               </div>
               <div className="relative rounded overflow-hidden aspect-video bg-black">
                 <img
-                  src="/samples/urpc/001_000002_underexposed.jpg"
+                  src={getAssetUrl('/samples/urpc/001_000002_underexposed.jpg')}
                   alt="Underexposed S02 frame"
                   className="w-full h-full object-cover"
                 />
@@ -172,7 +173,7 @@ export const RecaptureModal: React.FC = () => {
           <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-[rgba(0,229,255,0.3)] bg-black select-none">
             {/* Background Image: Recaptured (Bright / After) */}
             <img
-              src="/samples/urpc/001_000002.jpg"
+              src={getAssetUrl('/samples/urpc/001_000002.jpg')}
               alt="Recaptured frame"
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -183,7 +184,7 @@ export const RecaptureModal: React.FC = () => {
               style={{ width: `${sliderPos}%` }}
             >
               <img
-                src="/samples/urpc/001_000002_underexposed.jpg"
+                src={getAssetUrl('/samples/urpc/001_000002_underexposed.jpg')}
                 alt="Underexposed frame"
                 className="w-full h-full object-cover max-w-none"
                 style={{ width: '808px', height: '454px' }} // fixed to match parent aspect

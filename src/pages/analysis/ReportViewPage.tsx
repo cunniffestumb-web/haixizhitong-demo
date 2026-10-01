@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMissionStore } from '../../stores/missionStore';
+import { getAssetUrl } from '../../utils/assetUrl';
 import {
   FileText,
   Printer,
@@ -173,7 +174,7 @@ export const ReportViewPage: React.FC = () => {
               {/* S01 Normal */}
               <div className="bg-[#051121] p-2 rounded border border-[rgba(0,229,255,0.15)] flex flex-col">
                 <img
-                  src="/samples/urpc/000_000001.jpg"
+                  src={getAssetUrl('/samples/urpc/000_000001.jpg')}
                   alt="S01 Keyframe"
                   className="rounded aspect-video object-cover mb-1.5"
                 />
@@ -186,7 +187,7 @@ export const ReportViewPage: React.FC = () => {
               {/* S02 Recaptured */}
               <div className="bg-[#051121] p-2 rounded border border-[rgba(16,185,129,0.3)] flex flex-col">
                 <img
-                  src="/samples/urpc/001_000002.jpg"
+                  src={getAssetUrl('/samples/urpc/001_000002.jpg')}
                   alt="S02 Recaptured"
                   className="rounded aspect-video object-cover mb-1.5"
                 />
@@ -202,7 +203,7 @@ export const ReportViewPage: React.FC = () => {
               {/* S03 Reviewed */}
               <div className="bg-[#051121] p-2 rounded border border-[rgba(0,229,255,0.15)] flex flex-col">
                 <img
-                  src="/samples/urpc/003_000004.jpg"
+                  src={getAssetUrl('/samples/urpc/003_000004.jpg')}
                   alt="S03 Reviewed"
                   className="rounded aspect-video object-cover mb-1.5"
                 />

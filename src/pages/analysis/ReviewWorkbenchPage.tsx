@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useMissionStore } from '../../stores/missionStore';
+import { getAssetUrl } from '../../utils/assetUrl';
 import { MarineCategory, DetectionBox } from '../../types';
 import confetti from 'canvas-confetti';
 import {
@@ -400,7 +401,7 @@ export const ReviewWorkbenchPage: React.FC = () => {
                 }`}
               >
                 <img
-                  src={img.url}
+                  src={getAssetUrl(img.url)}
                   alt={img.filename}
                   className="w-14 h-10 object-cover rounded border border-[rgba(148,163,184,0.15)] shrink-0"
                 />
@@ -505,7 +506,7 @@ export const ReviewWorkbenchPage: React.FC = () => {
             {/* Background Image or Empty State */}
             {activeImg ? (
               <img
-                src={activeImg.url}
+                src={getAssetUrl(activeImg.url)}
                 alt="Workbench Canvas"
                 className="w-full h-full object-contain pointer-events-none select-none"
               />
@@ -545,7 +546,7 @@ export const ReviewWorkbenchPage: React.FC = () => {
                 style={{ width: `${splitPos}%`, borderRight: '2px solid #38bdf8' }}
               >
                 <img
-                  src="/samples/urpc/000_000007.jpg"
+                  src={getAssetUrl('/samples/urpc/000_000007.jpg')}
                   alt="Original Raw Underexposed"
                   className="w-[1920px] h-[1080px] max-w-none object-contain filter contrast-75 brightness-75"
                 />

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMissionStore } from '../../stores/missionStore';
+import { getAssetUrl } from '../../utils/assetUrl';
 import {
   Layers,
   Sliders,
@@ -224,7 +225,7 @@ export const MissionImagesPage: React.FC = () => {
             >
               <div className="relative aspect-video bg-black overflow-hidden">
                 <img
-                  src={img.url}
+                  src={getAssetUrl(img.url)}
                   alt={img.filename}
                   className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
                 />

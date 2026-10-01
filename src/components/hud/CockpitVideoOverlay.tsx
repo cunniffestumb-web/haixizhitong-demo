@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMissionStore } from '../../stores/missionStore';
+import { getAssetUrl } from '../../utils/assetUrl';
 import {
   Crosshair,
   Maximize2,
@@ -41,7 +42,7 @@ export const CockpitVideoOverlay: React.FC = () => {
       return telemetry.lightLeft >= 60 ? '/samples/urpc/001_000002.jpg' : '/samples/urpc/001_000002_underexposed.jpg';
     }
     if (mission.activeSiteId === 'S03') {
-      return '/samples/urpc/000_000003.jpg';
+      return '/samples/urpc/002_000003.jpg';
     }
     return '/samples/urpc/000_000001.jpg'; // S01 default live view
   };
@@ -75,7 +76,7 @@ export const CockpitVideoOverlay: React.FC = () => {
       {/* Background Image (Underwater Camera Feed) */}
       <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center">
         <img
-          src={feedUrl}
+          src={getAssetUrl(feedUrl)}
           alt="ROV Underwater Live Optical Stream"
           className="w-full h-full object-cover transition-all duration-300"
           style={{

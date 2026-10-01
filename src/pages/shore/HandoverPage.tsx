@@ -1,5 +1,6 @@
 import React from 'react';
 import { useMissionStore } from '../../stores/missionStore';
+import { getAssetUrl } from '../../utils/assetUrl';
 import {
   History,
   ArrowRight,
@@ -150,7 +151,7 @@ export const HandoverPage: React.FC = () => {
                 >
                   <div className="flex items-center gap-3">
                     <img
-                      src={img.url}
+                      src={getAssetUrl(img.url)}
                       alt={img.filename}
                       className="w-16 h-10 object-cover rounded border border-[rgba(0,229,255,0.2)]"
                     />
