@@ -12,6 +12,8 @@ import { MissionImagesPage } from './pages/analysis/MissionImagesPage';
 import { ReviewWorkbenchPage } from './pages/analysis/ReviewWorkbenchPage';
 import { SurveyStatisticsPage } from './pages/analysis/SurveyStatisticsPage';
 import { ReportViewPage } from './pages/analysis/ReportViewPage';
+import { NewUserTour } from './components/NewUserTour';
+import { TourWelcomeModal } from './components/TourWelcomeModal';
 import './styles/theme.css';
 
 export const App: React.FC = () => {
@@ -74,6 +76,10 @@ export const App: React.FC = () => {
             </>
           )}
         </main>
+
+        {/* Global Interactive New User Onboarding Tour & Welcome Dialog */}
+        <NewUserTour />
+        <TourWelcomeModal />
       </div>
     </ConfigProvider>
   );

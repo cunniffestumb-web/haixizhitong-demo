@@ -54,7 +54,7 @@ export const CockpitPage: React.FC = () => {
   return (
     <div className="w-full h-full flex flex-col p-2.5 gap-2 overflow-hidden bg-[#070d17] select-none text-xs">
       {/* Top L0 Industrial Safety Bar */}
-      <div className="w-full h-[36px] bg-[#0b1523] border border-[rgba(148,163,184,0.18)] rounded-md px-3.5 flex items-center justify-between font-mono text-[11px] shrink-0 text-[#94a3b8] shadow-sm">
+      <div id="tour-safety-bar" className="w-full h-[36px] bg-[#0b1523] border border-[rgba(148,163,184,0.18)] rounded-md px-3.5 flex items-center justify-between font-mono text-[11px] shrink-0 text-[#94a3b8] shadow-sm">
         <div className="flex items-center gap-3.5">
           <div className="flex items-center gap-1.5 text-white">
             <ShieldCheck className="w-4 h-4 text-[#10b981]" />
@@ -125,7 +125,7 @@ export const CockpitPage: React.FC = () => {
         {/* LEFT COLUMN: Sample Sites & Environmental Telemetry (310px) */}
         <div className="w-[310px] h-full flex flex-col gap-2 shrink-0">
           {/* Sample Sites Card */}
-          <div className="cockpit-panel p-2.5 flex flex-col shrink-0 hud-corner">
+          <div id="tour-sample-sites" className="cockpit-panel p-2.5 flex flex-col shrink-0 hud-corner">
             <div className="text-xs font-bold text-white flex items-center justify-between mb-2 pb-1.5 border-b border-[rgba(148,163,184,0.18)]">
               <span className="flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-[#38bdf8]" />
@@ -287,7 +287,7 @@ export const CockpitPage: React.FC = () => {
         {/* CENTER COLUMN: Live Video & Dynamic Filmstrip (flex-1) */}
         <div className="flex-1 h-full flex flex-col gap-2 min-w-0">
           {/* Main Underwater Video Feed with HUD */}
-          <div className="flex-1 min-h-0 relative">
+          <div id="tour-video-hud" className="flex-1 min-h-0 relative">
             <CockpitVideoOverlay />
           </div>
 
@@ -305,7 +305,7 @@ export const CockpitPage: React.FC = () => {
               </div>
 
               {/* Action Buttons: Capture & Handover */}
-              <div className="flex items-center gap-2">
+              <div id="tour-capture-actions" className="flex items-center gap-2">
                 <button
                   onClick={captureCurrentFrame}
                   className="px-2.5 py-1 bg-[#0ea5e9] hover:bg-[#0284c7] text-white rounded font-medium text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
@@ -315,6 +315,7 @@ export const CockpitPage: React.FC = () => {
                 </button>
 
                 <button
+                  id="tour-handover-btn"
                   onClick={handoverToAnalysis}
                   className="px-2.5 py-1 bg-[#10b981] hover:bg-[#059669] text-white rounded font-medium text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
                 >
@@ -376,7 +377,7 @@ export const CockpitPage: React.FC = () => {
         </div>
 
         {/* RIGHT COLUMN: Attitude Horizon + Thruster Visualizer (340px) */}
-        <div className="w-[340px] h-full flex flex-col gap-2 shrink-0 overflow-y-auto pr-0.5">
+        <div id="tour-attitude-thruster" className="w-[340px] h-full flex flex-col gap-2 shrink-0 overflow-y-auto pr-0.5">
           <AttitudeIndicator />
           <ThrusterVisualizer />
         </div>

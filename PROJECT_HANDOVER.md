@@ -57,9 +57,12 @@
 d:\比赛\数媒\海析智曈\海析智瞳双平台Demo
 ├── src/
 │   ├── stores/
-│   │   └── missionStore.ts        # 全局核心状态机（0帧出航态、装填示范数据、定点抓拍、探照灯控制、复拍决策采纳）
+│   │   ├── missionStore.ts        # 全局核心状态机（0帧出航态、装填示范数据、定点抓拍、探照灯控制、复拍决策采纳）
+│   │   └── tourStore.ts           # 漫游式新手指引状态（全流程/分平台引导、步进与首次访问持久化）
 │   ├── components/
-│   │   ├── Header.tsx             # 顶栏导航（双平台路由、双模式切换按钮、系统状态指示）
+│   │   ├── Header.tsx             # 顶栏导航（双平台路由、双模式切换按钮、系统状态指示、操作向导入口）
+│   │   ├── NewUserTour.tsx        # Ant Design 5 高性能漫游式聚光新手指引核心组件
+│   │   ├── TourWelcomeModal.tsx   # 首次访问轻量级交互式向导唤起对话框
 │   │   ├── hud/
 │   │   │   ├── CockpitVideoOverlay.tsx  # 纯净实时光电流 HUD 与切回实时监控控件
 │   │   │   └── TelemetryPanel.tsx       # MAVLink 2.0 实时遥测仪表盘

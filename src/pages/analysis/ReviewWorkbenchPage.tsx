@@ -505,7 +505,7 @@ export const ReviewWorkbenchPage: React.FC = () => {
       )}
 
       {/* 3. CENTER COLUMN: HIGH-PRECISION CANAVS WORKSPACE (flex-1) */}
-      <div className="flex-1 h-full flex flex-col cockpit-panel overflow-hidden relative">
+      <div id="tour-review-workbench" className="flex-1 h-full flex flex-col cockpit-panel overflow-hidden relative">
         {/* Canvas Toolbar Header */}
         <div className="h-10 bg-[#0b1523] border-b border-[rgba(148,163,184,0.14)] px-3 flex items-center justify-between shrink-0 font-mono text-[11px]">
           <div className="flex items-center gap-3">
@@ -544,7 +544,7 @@ export const ReviewWorkbenchPage: React.FC = () => {
             <span className="text-[#334155]">|</span>
 
             {/* Confidence Threshold Quick Slider */}
-            <div className="flex items-center gap-1.5 text-[#94a3b8] text-[10px]">
+            <div id="tour-threshold-slider" className="flex items-center gap-1.5 text-[#94a3b8] text-[10px]">
               <span>置信度过滤:</span>
               <Slider
                 min={0.3}

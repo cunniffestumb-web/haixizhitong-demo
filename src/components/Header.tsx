@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMissionStore } from '../stores/missionStore';
+import { useTourStore } from '../stores/tourStore';
 import {
   Compass,
   BatteryCharging,
@@ -41,6 +42,8 @@ export const Header: React.FC = () => {
     resetToCleanState,
   } = useMissionStore();
 
+  const { openTour } = useTourStore();
+
   const [seconds, setSeconds] = useState(mission.elapsedSeconds);
 
   useEffect(() => {
@@ -69,6 +72,42 @@ export const Header: React.FC = () => {
       clearNewAnalysisDataNotification();
     }
   };
+
+  const tourMenuItems: MenuProps['items'] = [
+    {
+      key: 'tour-full',
+      label: (
+        <span className="flex items-center gap-2 text-xs text-[#38bdf8] hover:text-white font-medium">
+          <Sparkles className="w-3.5 h-3.5 text-[#38bdf8]" />
+          🚀 全流程核心闭环向导 (软硬件协同 · 10 步)
+        </span>
+      ),
+      onClick: () => openTour('full'),
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: 'tour-shore',
+      label: (
+        <span className="flex items-center gap-2 text-xs text-[#94a3b8] hover:text-white">
+          <Anchor className="w-3.5 h-3.5 text-[#0ea5e9]" />
+          ⚓ ROV 岸端控制台向导 (遥测/抓拍/补光 · 6 步)
+        </span>
+      ),
+      onClick: () => openTour('shore'),
+    },
+    {
+      key: 'tour-analysis',
+      label: (
+        <span className="flex items-center gap-2 text-xs text-[#94a3b8] hover:text-white">
+          <Cpu className="w-3.5 h-3.5 text-[#10b981]" />
+          🔬 FBDPN 智能分析平台向导 (AI 复核/报告 · 4 步)
+        </span>
+      ),
+      onClick: () => openTour('analysis'),
+    },
+  ];
 
   const settingsMenuItems: MenuProps['items'] = [
     {
@@ -112,7 +151,7 @@ export const Header: React.FC = () => {
       {/* Left: Brand & Dual-Platform Pill Navigation */}
       <div className="flex items-center gap-2 2xl:gap-3 shrink-0">
         {/* Brand Logo & Title */}
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div id="tour-brand-header" className="flex items-center gap-2.5 shrink-0">
           <div className="w-8 h-8 rounded-md bg-gradient-to-br from-[#0c243c] to-[#0b1523] border border-[rgba(14,165,233,0.35)] flex items-center justify-center text-[#38bdf8] shadow-[0_0_10px_rgba(14,165,233,0.15)] shrink-0">
             <Eye className="w-4 h-4 text-[#38bdf8]" />
           </div>
@@ -130,7 +169,7 @@ export const Header: React.FC = () => {
         </div>
 
         {/* Dual-Platform Main Switcher */}
-        <div className="flex bg-[#070d17] p-1 rounded-md border border-[rgba(148,163,184,0.18)] shadow-inner shrink-0 whitespace-nowrap">
+        <div id="tour-platform-switcher" className="flex bg-[#070d17] p-1 rounded-md border border-[rgba(148,163,184,0.18)] shadow-inner shrink-0 whitespace-nowrap">
           <button
             onClick={() => handleSwitchPlatform('shore')}
             className={`flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-xs font-semibold whitespace-nowrap shrink-0 transition-all ${
@@ -258,6 +297,7 @@ export const Header: React.FC = () => {
                 <span className="whitespace-nowrap">调查统计</span>
               </button>
               <button
+                id="tour-report-export"
                 onClick={() => setAnalysisTab('report')}
                 className={`px-2 py-1 2xl:px-2.5 2xl:py-1.5 rounded text-xs transition-all flex items-center gap-1 2xl:gap-1.5 whitespace-nowrap shrink-0 ${
                   analysisTab === 'report'
@@ -301,7 +341,7 @@ export const Header: React.FC = () => {
         </div>
 
         {/* Telemetry Strip with ROV Status Capsule */}
-        <div className="flex items-center gap-1.5 2xl:gap-2 bg-[#070d17] px-2 2xl:px-2.5 py-1 rounded-md border border-[rgba(148,163,184,0.18)] text-xs shadow-inner whitespace-nowrap shrink-0">
+        <div id="tour-telemetry-safety" className="flex items-center gap-1.5 2xl:gap-2 bg-[#070d17] px-2 2xl:px-2.5 py-1 rounded-md border border-[rgba(148,163,184,0.18)] text-xs shadow-inner whitespace-nowrap shrink-0">
           <Tooltip title="在线设备: ROV-S6 六推进器深海观测级潜航器 (UDP 192.168.2.2:14550 / DEPTH_HOLD ARMED)">
             <div className="flex items-center gap-1.5 font-mono whitespace-nowrap shrink-0">
               <span className="relative flex h-2 w-2 shrink-0">
@@ -383,6 +423,17 @@ export const Header: React.FC = () => {
             </button>
           </Tooltip>
         )}
+
+        {/* New User Tour / Operations Guide Dropdown */}
+        <Dropdown menu={{ items: tourMenuItems }} placement="bottomRight" trigger={['click']}>
+          <button
+            id="tour-guide-btn"
+            className="px-2.5 py-1.5 rounded bg-gradient-to-r from-[#0c243c] to-[#122b48] hover:from-[#122b48] hover:to-[#1a3d66] text-[#38bdf8] hover:text-white border border-[rgba(14,165,233,0.45)] text-xs font-semibold flex items-center gap-1.5 transition-all shadow-[0_0_10px_rgba(14,165,233,0.15)] active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
+          >
+            <Compass className="w-3.5 h-3.5 text-[#38bdf8] shrink-0" />
+            <span className="whitespace-nowrap font-medium">操作向导</span>
+          </button>
+        </Dropdown>
 
         {/* Discreet Settings Dropdown (Includes dataset load & reset options) */}
         <Dropdown menu={{ items: settingsMenuItems }} placement="bottomRight" trigger={['click']}>

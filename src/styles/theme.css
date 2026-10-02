@@ -230,3 +230,79 @@ body {
     page-break-inside: avoid;
   }
 }
+
+/* ==========================================================================
+   Haixi Zhitong - High Performance HMI Tour & Onboarding Styles
+   ========================================================================== */
+
+/* Ant Design Tour Glassmorphism & Neon Glow */
+.ant-tour.haixi-custom-tour .ant-tour-inner {
+  background: rgba(11, 21, 35, 0.94) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(14, 165, 233, 0.45) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(14, 165, 233, 0.25) !important;
+  border-radius: 8px !important;
+  padding: 16px 18px !important;
+  max-width: 440px !important;
+}
+
+.ant-tour.haixi-custom-tour .ant-tour-title {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.ant-tour.haixi-custom-tour .ant-tour-description {
+  color: #cbd5e1 !important;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+}
+
+.ant-tour.haixi-custom-tour .ant-tour-close {
+  color: #94a3b8 !important;
+}
+
+.ant-tour.haixi-custom-tour .ant-tour-close:hover {
+  color: #ffffff !important;
+}
+
+/* Tour Buttons */
+.ant-tour.haixi-custom-tour .ant-tour-footer .ant-btn-primary {
+  background: linear-gradient(135deg, #0284c7, #0ea5e9) !important;
+  border: 1px solid rgba(56, 189, 248, 0.5) !important;
+  box-shadow: 0 0 12px rgba(14, 165, 233, 0.35) !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  color: #ffffff !important;
+}
+
+.ant-tour.haixi-custom-tour .ant-tour-footer .ant-btn-primary:hover {
+  background: linear-gradient(135deg, #0369a1, #0284c7) !important;
+}
+
+.ant-tour.haixi-custom-tour .ant-tour-footer .ant-btn-default {
+  background: rgba(15, 25, 40, 0.8) !important;
+  border: 1px solid rgba(148, 163, 184, 0.25) !important;
+  color: #cbd5e1 !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+}
+
+.ant-tour.haixi-custom-tour .ant-tour-footer .ant-btn-default:hover {
+  border-color: rgba(14, 165, 233, 0.45) !important;
+  color: #38bdf8 !important;
+}
+
+.ant-tour.haixi-custom-tour .ant-tour-indicators > span.ant-tour-indicator-active {
+  background: #38bdf8 !important;
+  box-shadow: 0 0 8px #38bdf8 !important;
+}
+
+/* Tour Welcome Modal Custom Transparent wrapper */
+.tour-welcome-modal .ant-modal-content {
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
