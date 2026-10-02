@@ -50,16 +50,16 @@ export const MissionImagesPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full p-3.5 overflow-y-auto bg-[#070d17] select-none text-xs">
-      <div className="max-w-6xl mx-auto space-y-3">
+    <div className="w-full h-full p-4 overflow-y-auto bg-[#070d17] select-none text-xs">
+      <div className="w-full max-w-[1780px] mx-auto space-y-3.5">
         {/* Top Header Card */}
-        <div className="cockpit-panel p-3.5 flex items-center justify-between">
+        <div className="cockpit-panel p-4 flex items-center justify-between hud-corner">
           <div>
-            <h1 className="text-base font-bold text-white flex items-center gap-2">
-              <Layers className="w-4 h-4 text-[#38bdf8]" />
+            <h1 className="text-lg font-bold text-white flex items-center gap-2">
+              <Layers className="w-5 h-5 text-[#38bdf8]" />
               任务影像资产库与模型初筛流水线
             </h1>
-            <p className="text-[#94a3b8] text-xs mt-0.5">
+            <p className="text-[#94a3b8] text-xs mt-1">
               管理本次巡检任务所有水下原始帧、大功率补光复拍对比帧与 FBDPN 算法推导切片
             </p>
           </div>
@@ -217,7 +217,7 @@ export const MissionImagesPage: React.FC = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3.5">
             {filteredImages.map((img) => (
             <div
               key={img.id}

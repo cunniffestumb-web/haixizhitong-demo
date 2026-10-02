@@ -182,9 +182,9 @@ export const SurveyStatisticsPage: React.FC = () => {
 
   return (
     <div className="w-full h-full p-4 overflow-y-auto bg-[#070d17] select-none text-xs">
-      <div className="max-w-6xl mx-auto space-y-4">
+      <div className="w-full max-w-[1780px] mx-auto space-y-4">
         {/* Top Header Card */}
-        <div className="cockpit-panel p-4 flex items-center justify-between">
+        <div className="cockpit-panel p-4 flex items-center justify-between hud-corner">
           <div>
             <h1 className="text-lg font-bold text-white flex items-center gap-2">
               <BarChart2 className="w-5 h-5 text-[#00e5ff]" />
@@ -209,34 +209,34 @@ export const SurveyStatisticsPage: React.FC = () => {
         {/* 3 Analytics Charts */}
         <div className="grid grid-cols-12 gap-4">
           {/* Chart 1: Review Before vs After (Col 6) */}
-          <div className="col-span-6 cockpit-panel p-4">
+          <div className="col-span-6 cockpit-panel p-4 hud-corner">
             <div className="text-white font-semibold text-xs pb-2 border-b border-[rgba(0,229,255,0.15)] flex items-center justify-between">
               <span>人工复核前后物标类别修正分布对比</span>
               <span className="text-[#10b981] font-mono text-[10px]">实时修正闭环</span>
             </div>
-            <div className="h-[260px] w-full">
+            <div className="h-[300px] w-full">
               <ReactECharts option={reviewCompareOption} style={{ height: '100%', width: '100%' }} />
             </div>
           </div>
 
           {/* Chart 2: Radar Biodiversity (Col 6) */}
-          <div className="col-span-6 cockpit-panel p-4">
+          <div className="col-span-6 cockpit-panel p-4 hud-corner">
             <div className="text-white font-semibold text-xs pb-2 border-b border-[rgba(0,229,255,0.15)] flex items-center justify-between">
               <span>各样点生境多维生态多样性雷达图 (Shannon Index)</span>
               <span className="text-[#94a3b8] font-mono text-[10px]">生境健康度评估</span>
             </div>
-            <div className="h-[260px] w-full">
+            <div className="h-[300px] w-full">
               <ReactECharts option={radarOption} style={{ height: '100%', width: '100%' }} />
             </div>
           </div>
 
           {/* Chart 3: Depth Gradient & Biomass Density (Col 12) */}
-          <div className="col-span-12 cockpit-panel p-4">
+          <div className="col-span-12 cockpit-panel p-4 hud-corner">
             <div className="text-white font-semibold text-xs pb-2 border-b border-[rgba(0,229,255,0.15)] flex items-center justify-between">
               <span>水深梯度与底栖物标栖息密度演化曲线</span>
               <span className="text-[#00e5ff] font-mono text-[10px]">水深: 8.2m → 12.4m</span>
             </div>
-            <div className="h-[220px] w-full">
+            <div className="h-[250px] w-full">
               <ReactECharts option={depthOption} style={{ height: '100%', width: '100%' }} />
             </div>
           </div>

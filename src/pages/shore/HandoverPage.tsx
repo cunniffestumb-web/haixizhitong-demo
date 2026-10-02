@@ -42,9 +42,9 @@ export const HandoverPage: React.FC = () => {
 
   return (
     <div className="w-full h-full p-4 overflow-y-auto bg-[#070d17] select-none text-xs">
-      <div className="max-w-6xl mx-auto space-y-4">
+      <div className="max-w-[1720px] mx-auto space-y-4">
         {/* Handover Hero Card */}
-        <div className="cockpit-panel p-5 flex items-center justify-between border-[rgba(0,229,255,0.3)] bg-gradient-to-r from-[#07172e] to-[#0a2347]">
+        <div className="cockpit-panel p-5 flex items-center justify-between border-[rgba(0,229,255,0.3)] bg-gradient-to-r from-[#07172e] to-[#0a2347] hud-corner">
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-xl font-bold text-white tracking-wide">
@@ -94,7 +94,7 @@ export const HandoverPage: React.FC = () => {
 
         {/* 4 Metrics Cards */}
         <div className="grid grid-cols-4 gap-4 font-mono">
-          <div className="cockpit-panel p-3">
+          <div className="cockpit-panel p-3 hud-corner">
             <div className="text-[#94a3b8] text-[10px]">有效巡检样点</div>
             <div className="text-2xl font-bold text-[#00e5ff] mt-1">
               {mission.sampleSites.filter((s) => s.status === 'completed').length} / 3
@@ -104,19 +104,19 @@ export const HandoverPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="cockpit-panel p-3">
+          <div className="cockpit-panel p-3 hud-corner">
             <div className="text-[#94a3b8] text-[10px]">主样帧影像采纳</div>
             <div className="text-2xl font-bold text-white mt-1">{adoptedImages.length} 帧</div>
             <div className="text-[10px] text-[#94a3b8] mt-0.5">包含自主补光复拍对比</div>
           </div>
 
-          <div className="cockpit-panel p-3">
+          <div className="cockpit-panel p-3 hud-corner">
             <div className="text-[#94a3b8] text-[10px]">在线初筛检出物标数</div>
             <div className="text-2xl font-bold text-[#10b981] mt-1">{totalDetections} 处</div>
             <div className="text-[10px] text-[#94a3b8] mt-0.5">海胆、海参、海星多群落</div>
           </div>
 
-          <div className="cockpit-panel p-3">
+          <div className="cockpit-panel p-3 hud-corner">
             <div className="text-[#94a3b8] text-[10px]">视觉质量达标率</div>
             <div className="text-2xl font-bold text-[#f59e0b] mt-1">
               {images.length > 0 ? (mission.sampleSites.some(s => s.qualityStatus === 'underexposed') ? '66.7%' : '100%') : '--'}
@@ -128,7 +128,7 @@ export const HandoverPage: React.FC = () => {
         {/* 2-Columns: Keyframe Inspection & Event Audit Timeline */}
         <div className="grid grid-cols-12 gap-4">
           {/* Keyframe Visual Inventory (Col 7) */}
-          <div className="col-span-7 cockpit-panel p-4 space-y-3">
+          <div className="col-span-7 cockpit-panel p-4 space-y-3 hud-corner">
             <div className="text-white font-semibold text-xs pb-2 border-b border-[rgba(0,229,255,0.15)] flex items-center justify-between">
               <span className="flex items-center gap-1.5">
                 <Camera className="w-3.5 h-3.5 text-[#00e5ff]" />
@@ -188,7 +188,7 @@ export const HandoverPage: React.FC = () => {
           </div>
 
           {/* Event Audit Timeline (Col 5) */}
-          <div className="col-span-5 cockpit-panel p-4 space-y-3">
+          <div className="col-span-5 cockpit-panel p-4 space-y-3 hud-corner">
             <div className="text-white font-semibold text-xs pb-2 border-b border-[rgba(0,229,255,0.15)] flex items-center justify-between">
               <span className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-[#00e5ff]" />

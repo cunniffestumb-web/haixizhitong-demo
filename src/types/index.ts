@@ -151,3 +151,24 @@ export interface ModelConfig {
 }
 
 export type InferenceState = 'idle' | 'running' | 'completed';
+
+export type MotionDirection =
+  | 'forward'
+  | 'backward'
+  | 'strafe_left'
+  | 'strafe_right'
+  | 'yaw_left'
+  | 'yaw_right'
+  | 'ascend'
+  | 'descend'
+  | 'idle';
+
+export interface MotionState {
+  direction: MotionDirection;
+  surge: number; // 前进/后退速度 m/s
+  sway: number;  // 左右横移速度 m/s
+  heave: number; // 上浮/下潜速度 m/s
+  yawRate: number; // 偏航角速度 deg/s
+  timestamp: number;
+}
+

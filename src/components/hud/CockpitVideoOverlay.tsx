@@ -20,6 +20,7 @@ export const CockpitVideoOverlay: React.FC = () => {
     images,
     activeImageId,
     telemetry,
+    motionState,
     isRecording,
     recordingSeconds,
     captureFlash,
@@ -30,6 +31,30 @@ export const CockpitVideoOverlay: React.FC = () => {
 
   const [showBoxes, setShowBoxes] = useState(false);
   const [showHUD, setShowHUD] = useState(true);
+
+  // Dynamic Camera Inertia Transform on 6-DOF controls
+  const getCameraTransform = () => {
+    switch (motionState.direction) {
+      case 'forward':
+        return 'scale(1.045) translateY(-8px)';
+      case 'backward':
+        return 'scale(0.965) translateY(8px)';
+      case 'strafe_left':
+        return 'translateX(-18px) rotate(-1.2deg)';
+      case 'strafe_right':
+        return 'translateX(18px) rotate(1.2deg)';
+      case 'yaw_left':
+        return 'translateX(-26px) perspective(700px) rotateY(-2.5deg)';
+      case 'yaw_right':
+        return 'translateX(26px) perspective(700px) rotateY(2.5deg)';
+      case 'ascend':
+        return 'translateY(16px) perspective(700px) rotateX(2deg)';
+      case 'descend':
+        return 'translateY(-16px) perspective(700px) rotateX(-2deg)';
+      default:
+        return 'scale(1) translate(0, 0) rotate(0deg)';
+    }
+  };
 
   // If a specific captured image was clicked in the reel, inspect that image;
   // Otherwise, render the LIVE real-time optical video stream for the active site!
@@ -78,18 +103,37 @@ export const CockpitVideoOverlay: React.FC = () => {
         <img
           src={getAssetUrl(feedUrl)}
           alt="ROV Underwater Live Optical Stream"
-          className="w-full h-full object-cover transition-all duration-300"
+          className="w-full h-full object-cover camera-spring-motion"
           style={{
+            transform: getCameraTransform(),
             filter: `brightness(${brightnessMultiplier.toFixed(2)}) contrast(${contrastMultiplier.toFixed(2)})`,
           }}
         />
 
-        {/* Ambient Subtle Vignette */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(5,11,20,0.55)] via-transparent to-[rgba(5,11,20,0.4)] pointer-events-none" />
+        {/* Ambient Subtle Vignette & Subsea Caustic Drift */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(5,11,20,0.6)] via-transparent to-[rgba(5,11,20,0.45)] pointer-events-none" />
+        <div className="absolute inset-0 subsea-ambient-caustics" />
       </div>
 
       {/* Shutter Flash Animation when capturing */}
       {captureFlash && <div className="shutter-flash" />}
+
+      {/* Real-time Dynamic Motion Vector HUD Pill */}
+      {motionState.direction !== 'idle' && (
+        <div className="absolute top-14 left-1/2 -translate-x-1/2 bg-[#0b1523]/90 backdrop-blur border border-[rgba(14,165,233,0.55)] px-4 py-1.5 rounded-full flex items-center gap-2 text-xs font-mono shadow-[0_0_15px_rgba(14,165,233,0.3)] animate-pulse pointer-events-none z-30">
+          <span className="w-2 h-2 rounded-full bg-[#10b981] animate-ping" />
+          <span className="text-[#38bdf8] font-bold">
+            {motionState.direction === 'forward' && '⚡ 水平动力全向推力：前推加速 (Surge +1.2 m/s)'}
+            {motionState.direction === 'backward' && '⚡ 水平动力协同倒退：减速后移 (Surge -0.8 m/s)'}
+            {motionState.direction === 'strafe_left' && '⚡ 矢量横向动力：左舷平移 (Sway -0.7 m/s)'}
+            {motionState.direction === 'strafe_right' && '⚡ 矢量横向动力：右舷平移 (Sway +0.7 m/s)'}
+            {motionState.direction === 'yaw_left' && '⚡ 差动转向偏航：左舵调姿 (Yaw Rate -5.0 °/s)'}
+            {motionState.direction === 'yaw_right' && '⚡ 差动转向偏航：右舵调姿 (Yaw Rate +5.0 °/s)'}
+            {motionState.direction === 'ascend' && '⚡ 垂直双推力矩阵：协同上浮 (Heave -0.3 m/s)'}
+            {motionState.direction === 'descend' && '⚡ 垂直双推力矩阵：协同下潜 (Heave +0.3 m/s)'}
+          </span>
+        </div>
+      )}
 
       {/* Precision CAD Detection Bounding Boxes Overlay (only when activeImg is captured & boxes enabled) */}
       {showBoxes && activeImg && (

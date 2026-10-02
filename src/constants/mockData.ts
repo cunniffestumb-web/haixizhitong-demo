@@ -6,7 +6,7 @@ export const INITIAL_MISSION: Mission = {
   name: '海洋牧场 A 区生物资源自主巡检与智能评估',
   code: 'HX-MPA-2026-A1',
   area: '黄海北部国家级海洋牧场示范区 14 号网箱外缘基岩礁区 (38°54′N, 121°38′E)',
-  operator: '岸端控制席 01（数字媒体竞赛专席）',
+  operator: '岸基操控主席 01 (Operator-01)',
   vessel: '海析智曈六推进器深海观测级 ROV-S6',
   status: 'collecting', // draft | self_check | collecting | transferred | analyzing | reviewing | archived
   startedAt: '2026-10-01 09:20:00',

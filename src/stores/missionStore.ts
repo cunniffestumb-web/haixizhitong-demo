@@ -13,6 +13,8 @@ import {
   MarineCategory,
   DetectionBox,
   InferenceState,
+  MotionState,
+  MotionDirection,
 } from '../types';
 import {
   INITIAL_MISSION,
@@ -59,6 +61,9 @@ interface MissionState {
   isRecording: boolean;
   recordingSeconds: number;
 
+  // Motion state & interactive 6-DOF controls
+  motionState: MotionState;
+
   // Undo / History stack for review
   history: Array<{ images: CapturedImage[] }>;
   future: Array<{ images: CapturedImage[] }>;
@@ -67,6 +72,8 @@ interface MissionState {
   setPlatformMode: (mode: PlatformMode) => void;
   setShoreTab: (tab: ShoreTab) => void;
   setAnalysisTab: (tab: AnalysisTab) => void;
+  triggerMotion: (direction: MotionDirection) => void;
+  simulateOceanMicroDynamics: () => void;
   runModelInference: () => Promise<void>;
   clearNewAnalysisDataNotification: () => void;
   setActiveSite: (siteId: 'S01' | 'S02' | 'S03') => void;
@@ -175,6 +182,15 @@ export const useMissionStore = create<MissionState>((set, get) => ({
   isRecording: false,
   recordingSeconds: 0,
 
+  motionState: {
+    direction: 'idle',
+    surge: 0,
+    sway: 0,
+    heave: 0,
+    yawRate: 0,
+    timestamp: Date.now(),
+  },
+
   history: [],
   future: [],
 
@@ -182,6 +198,162 @@ export const useMissionStore = create<MissionState>((set, get) => ({
   setShoreTab: (tab) => set({ shoreTab: tab }),
   setAnalysisTab: (tab) => set({ analysisTab: tab }),
   clearNewAnalysisDataNotification: () => set({ hasNewAnalysisData: false }),
+
+  triggerMotion: (direction: MotionDirection) => {
+    const { telemetry, thrusters } = get();
+    let summary = '';
+    let surge = 0;
+    let sway = 0;
+    let heave = 0;
+    let yawRate = 0;
+
+    let targetPitch = telemetry.pitch;
+    let targetRoll = telemetry.roll;
+    let targetHeading = telemetry.heading;
+    let targetDepth = telemetry.depth;
+
+    const activeThrusters = thrusters.map((t) => ({ ...t }));
+
+    switch (direction) {
+      case 'forward':
+        summary = '全向动力控制：水平推进器组前推加速 (Surge +1.2m/s)';
+        surge = 1.2;
+        targetPitch = -1.8;
+        activeThrusters[0].load = 82; activeThrusters[0].pwm = 1820;
+        activeThrusters[1].load = 82; activeThrusters[1].pwm = 1820;
+        activeThrusters[2].load = 76; activeThrusters[2].pwm = 1790;
+        activeThrusters[3].load = 76; activeThrusters[3].pwm = 1790;
+        break;
+      case 'backward':
+        summary = '全向动力控制：协同倒退后移减速 (Reverse -0.8m/s)';
+        surge = -0.8;
+        targetPitch = 1.5;
+        activeThrusters[0].load = 72; activeThrusters[0].pwm = 1240;
+        activeThrusters[1].load = 72; activeThrusters[1].pwm = 1240;
+        activeThrusters[2].load = 68; activeThrusters[2].pwm = 1260;
+        activeThrusters[3].load = 68; activeThrusters[3].pwm = 1260;
+        break;
+      case 'strafe_left':
+        summary = '横向动力控制：平移左舷横移 (Sway Left -0.7m/s)';
+        sway = -0.7;
+        targetRoll = -1.8;
+        activeThrusters[0].load = 74; activeThrusters[0].pwm = 1740;
+        activeThrusters[1].load = 32; activeThrusters[1].pwm = 1350;
+        activeThrusters[2].load = 70; activeThrusters[2].pwm = 1720;
+        activeThrusters[3].load = 30; activeThrusters[3].pwm = 1360;
+        break;
+      case 'strafe_right':
+        summary = '横向动力控制：平移右舷横移 (Sway Right +0.7m/s)';
+        sway = 0.7;
+        targetRoll = 1.8;
+        activeThrusters[0].load = 32; activeThrusters[0].pwm = 1350;
+        activeThrusters[1].load = 74; activeThrusters[1].pwm = 1740;
+        activeThrusters[2].load = 30; activeThrusters[2].pwm = 1360;
+        activeThrusters[3].load = 70; activeThrusters[3].pwm = 1720;
+        break;
+      case 'yaw_left':
+        summary = '航向微调：左转偏航调姿 (Yaw Left -5°)';
+        yawRate = -5.0;
+        targetHeading = (telemetry.heading - 5 + 360) % 360;
+        targetRoll = -1.2;
+        activeThrusters[0].load = 78; activeThrusters[0].pwm = 1780;
+        activeThrusters[1].load = 22; activeThrusters[1].pwm = 1320;
+        activeThrusters[2].load = 24; activeThrusters[2].pwm = 1330;
+        activeThrusters[3].load = 76; activeThrusters[3].pwm = 1770;
+        break;
+      case 'yaw_right':
+        summary = '航向微调：右转偏航调姿 (Yaw Right +5°)';
+        yawRate = 5.0;
+        targetHeading = (telemetry.heading + 5) % 360;
+        targetRoll = 1.2;
+        activeThrusters[0].load = 22; activeThrusters[0].pwm = 1320;
+        activeThrusters[1].load = 78; activeThrusters[1].pwm = 1780;
+        activeThrusters[2].load = 76; activeThrusters[2].pwm = 1770;
+        activeThrusters[3].load = 24; activeThrusters[3].pwm = 1330;
+        break;
+      case 'ascend':
+        summary = '垂向控制：垂直双推协同上浮 (Heave Up -0.3m)';
+        heave = -0.3;
+        targetDepth = Math.max(0.5, telemetry.depth - 0.3);
+        targetPitch = 1.0;
+        activeThrusters[4].load = 85; activeThrusters[4].pwm = 1860;
+        activeThrusters[5].load = 85; activeThrusters[5].pwm = 1860;
+        break;
+      case 'descend':
+        summary = '垂向控制：垂直双推协同下潜 (Heave Down +0.3m)';
+        heave = 0.3;
+        targetDepth = telemetry.depth + 0.3;
+        targetPitch = -1.0;
+        activeThrusters[4].load = 82; activeThrusters[4].pwm = 1220;
+        activeThrusters[5].load = 82; activeThrusters[5].pwm = 1220;
+        break;
+      default:
+        break;
+    }
+
+    set({
+      motionState: {
+        direction,
+        surge,
+        sway,
+        heave,
+        yawRate,
+        timestamp: Date.now(),
+      },
+      thrusters: activeThrusters,
+      telemetry: {
+        ...telemetry,
+        pitch: targetPitch,
+        roll: targetRoll,
+        heading: targetHeading,
+        depth: targetDepth,
+      },
+    });
+
+    get().sendCommand('move', { direction, surge, sway, heave }, summary);
+
+    setTimeout(() => {
+      const current = get();
+      if (current.motionState.timestamp <= Date.now() - 500) {
+        set({
+          motionState: {
+            direction: 'idle',
+            surge: 0,
+            sway: 0,
+            heave: 0,
+            yawRate: 0,
+            timestamp: Date.now(),
+          },
+          thrusters: INITIAL_THRUSTERS.map((t) => ({ ...t })),
+          telemetry: {
+            ...current.telemetry,
+            pitch: -1.8,
+            roll: 0.9,
+          },
+        });
+      }
+    }, 650);
+  },
+
+  simulateOceanMicroDynamics: () => {
+    const { telemetry } = get();
+    const dPitch = (Math.random() - 0.5) * 0.08;
+    const dRoll = (Math.random() - 0.5) * 0.08;
+    const dDepth = (Math.random() - 0.5) * 0.012;
+    const dHeading = (Math.random() - 0.5) * 0.12;
+    const dVolt = (Math.random() - 0.5) * 0.02;
+
+    set({
+      telemetry: {
+        ...telemetry,
+        pitch: Number((telemetry.pitch + dPitch).toFixed(2)),
+        roll: Number((telemetry.roll + dRoll).toFixed(2)),
+        depth: Number(Math.max(0.5, telemetry.depth + dDepth).toFixed(2)),
+        heading: Number(((telemetry.heading + dHeading + 360) % 360).toFixed(1)),
+        batteryVoltage: Number((24.0 + dVolt).toFixed(2)),
+      },
+    });
+  },
 
   setActiveSite: (siteId) => {
     const { mission, images } = get();

@@ -108,50 +108,51 @@ export const Header: React.FC = () => {
   ];
 
   return (
-    <header className="h-[62px] bg-[#0b1523] border-b border-[rgba(148,163,184,0.14)] px-4 flex items-center justify-between select-none relative z-50 shadow-sm">
+    <header className="h-[62px] bg-[#0b1523] border-b border-[rgba(148,163,184,0.18)] px-2 2xl:px-3.5 flex items-center justify-between select-none relative z-50 shadow-md gap-1.5 2xl:gap-2 overflow-x-hidden">
       {/* Left: Brand & Dual-Platform Pill Navigation */}
-      <div className="flex items-center gap-5">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded bg-[#111f33] border border-[rgba(148,163,184,0.2)] flex items-center justify-center text-[#38bdf8]">
-            <Eye className="w-4 h-4" />
+      <div className="flex items-center gap-2 2xl:gap-3 shrink-0">
+        {/* Brand Logo & Title */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-8 h-8 rounded-md bg-gradient-to-br from-[#0c243c] to-[#0b1523] border border-[rgba(14,165,233,0.35)] flex items-center justify-center text-[#38bdf8] shadow-[0_0_10px_rgba(14,165,233,0.15)] shrink-0">
+            <Eye className="w-4 h-4 text-[#38bdf8]" />
           </div>
-          <div>
-            <div className="text-sm font-semibold tracking-wide text-white flex items-center gap-2">
-              海析智曈
-              <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#111f33] text-[#94a3b8] border border-[rgba(148,163,184,0.18)] font-mono">
+          <div className="leading-tight shrink-0 whitespace-nowrap">
+            <div className="text-sm font-bold tracking-wide text-white flex items-center gap-1.5">
+              <span>海析智曈</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#0c1f38] text-[#38bdf8] border border-[rgba(14,165,233,0.35)] font-mono font-semibold tracking-normal">
                 v2.4-PRO
               </span>
             </div>
-            <div className="text-[10px] text-[#64748b] tracking-wider uppercase font-mono">
-              ROV-GCS & FBDPN AI Platform
+            <div className="hidden min-[1680px]:block text-[9px] text-[#94a3b8] tracking-wider uppercase font-mono font-medium">
+              ROV-GCS & FBDPN AI PLATFORM
             </div>
           </div>
         </div>
 
         {/* Dual-Platform Main Switcher */}
-        <div className="flex bg-[#070d17] p-1 rounded-md border border-[rgba(148,163,184,0.14)]">
+        <div className="flex bg-[#070d17] p-1 rounded-md border border-[rgba(148,163,184,0.18)] shadow-inner shrink-0 whitespace-nowrap">
           <button
             onClick={() => handleSwitchPlatform('shore')}
-            className={`flex items-center gap-2 px-3 py-1 rounded text-xs font-medium transition-all ${
+            className={`flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-xs font-semibold whitespace-nowrap shrink-0 transition-all ${
               platformMode === 'shore'
-                ? 'bg-[#12233b] text-[#38bdf8] border border-[rgba(14,165,233,0.3)] shadow-sm'
-                : 'text-[#94a3b8] hover:text-white hover:bg-[rgba(255,255,255,0.03)]'
+                ? 'bg-gradient-to-r from-[#12233b] to-[#162d4c] text-[#38bdf8] border border-[rgba(14,165,233,0.45)] shadow-sm'
+                : 'text-[#94a3b8] hover:text-white hover:bg-[rgba(255,255,255,0.04)]'
             }`}
           >
-            <Anchor className="w-3.5 h-3.5" />
-            ROV 岸端控制地面站
+            <Anchor className="w-3.5 h-3.5 shrink-0" />
+            <span className="whitespace-nowrap">ROV 岸端地面控制台</span>
           </button>
 
           <button
             onClick={() => handleSwitchPlatform('analysis')}
-            className={`relative flex items-center gap-2 px-3 py-1 rounded text-xs font-medium transition-all ${
+            className={`relative flex items-center gap-1.5 px-2.5 py-1 2xl:px-3 2xl:py-1.5 rounded text-xs font-semibold whitespace-nowrap shrink-0 transition-all ${
               platformMode === 'analysis'
-                ? 'bg-[#0f2820] text-[#34d399] border border-[rgba(16,185,129,0.3)] shadow-sm'
-                : 'text-[#94a3b8] hover:text-white hover:bg-[rgba(255,255,255,0.03)]'
+                ? 'bg-gradient-to-r from-[#0f2820] to-[#14362b] text-[#34d399] border border-[rgba(16,185,129,0.45)] shadow-sm'
+                : 'text-[#94a3b8] hover:text-white hover:bg-[rgba(255,255,255,0.04)]'
             }`}
           >
-            <Cpu className="w-3.5 h-3.5" />
-            FBDPN 智能分析平台
+            <Cpu className="w-3.5 h-3.5 shrink-0" />
+            <span className="whitespace-nowrap">FBDPN 智能分析平台</span>
             {hasNewAnalysisData && (
               <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#f59e0b] opacity-75" />
@@ -162,200 +163,206 @@ export const Header: React.FC = () => {
         </div>
 
         {/* Sub-navigation tabs based on Platform Mode */}
-        <div className="flex items-center gap-1 border-l border-[rgba(148,163,184,0.15)] pl-4">
+        <div className="flex items-center gap-1 2xl:gap-1.5 border-l border-[rgba(148,163,184,0.18)] pl-2 2xl:pl-3 shrink-0 whitespace-nowrap">
           {platformMode === 'shore' ? (
             <>
               <button
                 onClick={() => setShoreTab('cockpit')}
-                className={`px-2.5 py-1 rounded text-xs transition-all flex items-center gap-1.5 ${
+                className={`px-2 py-1 2xl:px-2.5 2xl:py-1.5 rounded text-xs transition-all flex items-center gap-1 2xl:gap-1.5 whitespace-nowrap shrink-0 ${
                   shoreTab === 'cockpit'
-                    ? 'text-white bg-[#12233b] font-medium border border-[rgba(14,165,233,0.3)]'
-                    : 'text-[#94a3b8] hover:text-white'
+                    ? 'text-white bg-[#12233b] font-semibold border border-[rgba(14,165,233,0.4)] shadow-sm'
+                    : 'text-[#94a3b8] hover:text-white hover:bg-[#070d17]'
                 }`}
               >
-                <SlidersHorizontal className="w-3 h-3 text-[#38bdf8]" />
-                作业驾驶舱
+                <SlidersHorizontal className="w-3.5 h-3.5 text-[#38bdf8] shrink-0" />
+                <span className="whitespace-nowrap">作业驾驶舱</span>
               </button>
               <button
                 onClick={() => setShoreTab('task_center')}
-                className={`px-2.5 py-1 rounded text-xs transition-all flex items-center gap-1.5 ${
+                className={`px-2 py-1 2xl:px-2.5 2xl:py-1.5 rounded text-xs transition-all flex items-center gap-1 2xl:gap-1.5 whitespace-nowrap shrink-0 ${
                   shoreTab === 'task_center'
-                    ? 'text-white bg-[#12233b] font-medium border border-[rgba(14,165,233,0.3)]'
-                    : 'text-[#94a3b8] hover:text-white'
+                    ? 'text-white bg-[#12233b] font-semibold border border-[rgba(14,165,233,0.4)] shadow-sm'
+                    : 'text-[#94a3b8] hover:text-white hover:bg-[#070d17]'
                 }`}
               >
-                <Layers className="w-3 h-3 text-[#38bdf8]" />
-                任务中心
+                <Layers className="w-3.5 h-3.5 text-[#38bdf8] shrink-0" />
+                <span className="whitespace-nowrap">任务中心</span>
               </button>
               <button
                 onClick={() => setShoreTab('devices')}
-                className={`px-2.5 py-1 rounded text-xs transition-all flex items-center gap-1.5 ${
+                className={`px-2 py-1 2xl:px-2.5 2xl:py-1.5 rounded text-xs transition-all flex items-center gap-1 2xl:gap-1.5 whitespace-nowrap shrink-0 ${
                   shoreTab === 'devices'
-                    ? 'text-white bg-[#12233b] font-medium border border-[rgba(14,165,233,0.3)]'
-                    : 'text-[#94a3b8] hover:text-white'
+                    ? 'text-white bg-[#12233b] font-semibold border border-[rgba(14,165,233,0.4)] shadow-sm'
+                    : 'text-[#94a3b8] hover:text-white hover:bg-[#070d17]'
                 }`}
               >
-                <Radio className="w-3 h-3 text-[#38bdf8]" />
-                设备与自检
+                <Radio className="w-3.5 h-3.5 text-[#38bdf8] shrink-0" />
+                <span className="whitespace-nowrap">设备与自检</span>
               </button>
               <button
                 onClick={() => setShoreTab('handover')}
-                className={`px-2.5 py-1 rounded text-xs transition-all flex items-center gap-1.5 ${
+                className={`px-2 py-1 2xl:px-2.5 2xl:py-1.5 rounded text-xs transition-all flex items-center gap-1 2xl:gap-1.5 whitespace-nowrap shrink-0 ${
                   shoreTab === 'handover'
-                    ? 'text-white bg-[#12233b] font-medium border border-[rgba(14,165,233,0.3)]'
-                    : 'text-[#94a3b8] hover:text-white'
+                    ? 'text-white bg-[#12233b] font-semibold border border-[rgba(14,165,233,0.4)] shadow-sm'
+                    : 'text-[#94a3b8] hover:text-white hover:bg-[#070d17]'
                 }`}
               >
-                <History className="w-3 h-3 text-[#38bdf8]" />
-                记录与封存移交
+                <History className="w-3.5 h-3.5 text-[#38bdf8] shrink-0" />
+                <span className="whitespace-nowrap">记录与移交</span>
               </button>
             </>
           ) : (
             <>
               <button
-                onClick={() => setAnalysisTab('images')}
-                className={`px-2.5 py-1 rounded text-xs transition-all flex items-center gap-1.5 ${
-                  analysisTab === 'images'
-                    ? 'text-white bg-[#0f2820] font-medium border border-[rgba(16,185,129,0.3)]'
-                    : 'text-[#94a3b8] hover:text-white'
+                onClick={() => setAnalysisTab('workbench')}
+                className={`px-2 py-1 2xl:px-2.5 2xl:py-1.5 rounded text-xs transition-all flex items-center gap-1 2xl:gap-1.5 whitespace-nowrap shrink-0 ${
+                  analysisTab === 'workbench'
+                    ? 'text-white bg-[#0f2820] font-semibold border border-[rgba(16,185,129,0.4)] shadow-sm'
+                    : 'text-[#94a3b8] hover:text-white hover:bg-[#070d17]'
                 }`}
               >
-                <Layers className="w-3 h-3 text-[#34d399]" />
-                任务与影像
+                <Eye className="w-3.5 h-3.5 text-[#34d399] shrink-0" />
+                <span className="whitespace-nowrap">检测与复核</span>
               </button>
               <button
-                onClick={() => setAnalysisTab('workbench')}
-                className={`px-2.5 py-1 rounded text-xs transition-all flex items-center gap-1.5 ${
-                  analysisTab === 'workbench'
-                    ? 'text-white bg-[#0f2820] font-medium border border-[rgba(16,185,129,0.3)]'
-                    : 'text-[#94a3b8] hover:text-white'
+                onClick={() => setAnalysisTab('images')}
+                className={`px-2 py-1 2xl:px-2.5 2xl:py-1.5 rounded text-xs transition-all flex items-center gap-1 2xl:gap-1.5 whitespace-nowrap shrink-0 ${
+                  analysisTab === 'images'
+                    ? 'text-white bg-[#0f2820] font-semibold border border-[rgba(16,185,129,0.4)] shadow-sm'
+                    : 'text-[#94a3b8] hover:text-white hover:bg-[#070d17]'
                 }`}
               >
-                <Eye className="w-3 h-3 text-[#34d399]" />
-                检测与复核工作台
+                <Layers className="w-3.5 h-3.5 text-[#34d399] shrink-0" />
+                <span className="whitespace-nowrap">任务影像库</span>
               </button>
               <button
                 onClick={() => setAnalysisTab('overview')}
-                className={`px-2.5 py-1 rounded text-xs transition-all flex items-center gap-1.5 ${
+                className={`px-2 py-1 2xl:px-2.5 2xl:py-1.5 rounded text-xs transition-all flex items-center gap-1 2xl:gap-1.5 whitespace-nowrap shrink-0 ${
                   analysisTab === 'overview'
-                    ? 'text-white bg-[#0f2820] font-medium border border-[rgba(16,185,129,0.3)]'
-                    : 'text-[#94a3b8] hover:text-white'
+                    ? 'text-white bg-[#0f2820] font-semibold border border-[rgba(16,185,129,0.4)] shadow-sm'
+                    : 'text-[#94a3b8] hover:text-white hover:bg-[#070d17]'
                 }`}
               >
-                <BarChart2 className="w-3 h-3 text-[#34d399]" />
-                调查总览
+                <BarChart2 className="w-3.5 h-3.5 text-[#34d399] shrink-0" />
+                <span className="whitespace-nowrap">调查总览</span>
               </button>
               <button
                 onClick={() => setAnalysisTab('statistics')}
-                className={`px-2.5 py-1 rounded text-xs transition-all flex items-center gap-1.5 ${
+                className={`px-2 py-1 2xl:px-2.5 2xl:py-1.5 rounded text-xs transition-all flex items-center gap-1 2xl:gap-1.5 whitespace-nowrap shrink-0 ${
                   analysisTab === 'statistics'
-                    ? 'text-white bg-[#0f2820] font-medium border border-[rgba(16,185,129,0.3)]'
-                    : 'text-[#94a3b8] hover:text-white'
+                    ? 'text-white bg-[#0f2820] font-semibold border border-[rgba(16,185,129,0.4)] shadow-sm'
+                    : 'text-[#94a3b8] hover:text-white hover:bg-[#070d17]'
                 }`}
               >
-                <BarChart2 className="w-3 h-3 text-[#34d399]" />
-                调查统计
+                <BarChart2 className="w-3.5 h-3.5 text-[#34d399] shrink-0" />
+                <span className="whitespace-nowrap">调查统计</span>
               </button>
               <button
                 onClick={() => setAnalysisTab('report')}
-                className={`px-2.5 py-1 rounded text-xs transition-all flex items-center gap-1.5 ${
+                className={`px-2 py-1 2xl:px-2.5 2xl:py-1.5 rounded text-xs transition-all flex items-center gap-1 2xl:gap-1.5 whitespace-nowrap shrink-0 ${
                   analysisTab === 'report'
-                    ? 'text-white bg-[#0f2820] font-medium border border-[rgba(16,185,129,0.3)]'
-                    : 'text-[#94a3b8] hover:text-white'
+                    ? 'text-white bg-[#0f2820] font-semibold border border-[rgba(16,185,129,0.4)] shadow-sm'
+                    : 'text-[#94a3b8] hover:text-white hover:bg-[#070d17]'
                 }`}
               >
-                <FileText className="w-3 h-3 text-[#34d399]" />
-                成果报告
+                <FileText className="w-3.5 h-3.5 text-[#34d399] shrink-0" />
+                <span className="whitespace-nowrap">成果报告</span>
               </button>
             </>
           )}
         </div>
       </div>
 
-      {/* Center: Live ROV Hardware Communication Masthead */}
-      <div className="hidden 2xl:flex items-center gap-3 px-3 py-1 bg-[#070d17] border border-[rgba(148,163,184,0.12)] rounded text-[11px] font-mono text-[#94a3b8]">
-        <div className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]" />
-          <span>ROV-S6</span>
-          <span className="text-[#475569]">|</span>
-          <span className="text-[#cbd5e1]">192.168.2.2:14550</span>
+      {/* Center: Optional Extended Avionics Profile (Visible only on ultra-wide screens >= 1800px) */}
+      <div className="hidden min-[1800px]:flex items-center gap-2 px-3 py-1.5 bg-[#070d17] border border-[rgba(148,163,184,0.18)] rounded-md text-[11px] font-mono text-[#cbd5e1] shadow-inner whitespace-nowrap shrink-0">
+        <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
+          <span className="text-[#64748b]">UDP:</span>
+          <span className="text-[#94a3b8] whitespace-nowrap">192.168.2.2:14550</span>
         </div>
         <span className="text-[#334155]">/</span>
-        <div className="flex items-center gap-1 text-[#cbd5e1]">
+        <div className="flex items-center gap-1 text-[#38bdf8] whitespace-nowrap shrink-0">
           <span className="text-[#64748b]">RTSP:</span>
-          <span>1080P@30fps</span>
+          <span className="font-medium whitespace-nowrap">1080P@30fps</span>
         </div>
         <span className="text-[#334155]">/</span>
-        <div className="flex items-center gap-1 text-[#38bdf8]">
+        <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
           <span className="text-[#64748b]">FC:</span>
-          <span>DEPTH_HOLD</span>
-          <span className="px-1 py-0.2 rounded bg-[rgba(16,185,129,0.15)] text-[#10b981] border border-[rgba(16,185,129,0.3)] text-[10px]">
-            ARMED
-          </span>
+          <span className="text-[#cbd5e1] whitespace-nowrap">DEPTH_HOLD</span>
         </div>
       </div>
 
       {/* Right: Operational Telemetry & Safety Actions */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1.5 2xl:gap-2 shrink-0 whitespace-nowrap">
         {/* Mission Run Timer */}
-        <div className="hidden lg:flex flex-col items-end">
-          <div className="text-[10px] text-[#64748b] font-mono flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]" />
-            潜次运行时间
-          </div>
-          <div className="text-xs text-[#f1f5f9] font-mono font-medium">
-            {formatTimer(seconds)}
-          </div>
+        <div className="hidden min-[1680px]:flex items-center gap-1.5 bg-[#070d17] px-2 py-1 rounded-md border border-[rgba(148,163,184,0.18)] text-xs shadow-inner whitespace-nowrap shrink-0">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] shrink-0" />
+          <span className="text-[10px] text-[#94a3b8]">运行</span>
+          <span className="text-xs text-[#f8fafc] font-mono font-bold">{formatTimer(seconds)}</span>
         </div>
 
-        {/* Telemetry Strip */}
-        <div className="flex items-center gap-2.5 bg-[#070d17] px-3 py-1.5 rounded border border-[rgba(148,163,184,0.14)] text-xs">
-          <Tooltip title="系留光缆延迟 (Tether Latency)">
-            <div className="flex items-center gap-1 text-[#94a3b8]">
-              <Wifi className="w-3.5 h-3.5 text-[#10b981]" />
-              <span className="font-mono text-[#f1f5f9]">{telemetry.tetherLatency}ms</span>
-            </div>
-          </Tooltip>
-
-          <span className="text-[#334155]">|</span>
-
-          <Tooltip title="水下深度 (Depth)">
-            <div className="flex items-center gap-1 text-[#94a3b8]">
-              <span className="text-[11px] text-[#64748b]">深度:</span>
-              <span className="font-mono text-[#f1f5f9] font-medium">
-                {telemetry.depth.toFixed(1)}m
+        {/* Telemetry Strip with ROV Status Capsule */}
+        <div className="flex items-center gap-1.5 2xl:gap-2 bg-[#070d17] px-2 2xl:px-2.5 py-1 rounded-md border border-[rgba(148,163,184,0.18)] text-xs shadow-inner whitespace-nowrap shrink-0">
+          <Tooltip title="在线设备: ROV-S6 六推进器深海观测级潜航器 (UDP 192.168.2.2:14550 / DEPTH_HOLD ARMED)">
+            <div className="flex items-center gap-1.5 font-mono whitespace-nowrap shrink-0">
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]" />
+              </span>
+              <span className="font-bold text-white whitespace-nowrap tracking-wide">ROV-S6</span>
+              <span className="px-1.5 py-0.5 rounded bg-[rgba(16,185,129,0.18)] text-[#10b981] border border-[rgba(16,185,129,0.4)] text-[9px] font-bold whitespace-nowrap">
+                ARMED
               </span>
             </div>
           </Tooltip>
 
           <span className="text-[#334155]">|</span>
 
+          <Tooltip title="系留光缆延迟 (Tether Latency)">
+            <div className="flex items-center gap-1 text-[#94a3b8] whitespace-nowrap shrink-0">
+              <Wifi className="w-3.5 h-3.5 text-[#10b981] shrink-0" />
+              <span className="font-mono text-[#f8fafc] font-medium whitespace-nowrap">{telemetry.tetherLatency}ms</span>
+            </div>
+          </Tooltip>
+
+          <span className="text-[#334155]">|</span>
+
+          <Tooltip title="水下深度 (Depth)">
+            <div className="flex items-center gap-1 whitespace-nowrap shrink-0">
+              <span className="text-[11px] text-[#64748b] whitespace-nowrap">深:</span>
+              <span className="font-mono text-[#f8fafc] font-bold whitespace-nowrap">
+                {telemetry.depth.toFixed(1)}m
+              </span>
+            </div>
+          </Tooltip>
+
+          <span className="hidden min-[1440px]:inline text-[#334155]">|</span>
+
           <Tooltip title="罗盘航向 (Heading)">
-            <div className="flex items-center gap-1 text-[#94a3b8]">
-              <Compass className="w-3.5 h-3.5 text-[#94a3b8]" />
-              <span className="font-mono text-[#f1f5f9]">{Math.round(telemetry.heading)}°</span>
+            <div className="hidden min-[1440px]:flex items-center gap-1 text-[#94a3b8] whitespace-nowrap shrink-0">
+              <Compass className="w-3.5 h-3.5 text-[#38bdf8] shrink-0" />
+              <span className="font-mono text-[#f8fafc] font-bold whitespace-nowrap">{Math.round(telemetry.heading)}°</span>
+            </div>
+          </Tooltip>
+
+          <span className="hidden min-[1680px]:inline text-[#334155]">|</span>
+
+          <Tooltip title={`水密舱水浸状态：正常安全无渗漏`}>
+            <div className="hidden min-[1680px]:flex items-center gap-1 text-[#10b981] whitespace-nowrap shrink-0">
+              <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
+              <span className="font-mono text-[11px] font-bold whitespace-nowrap">SAFE</span>
             </div>
           </Tooltip>
 
           <span className="text-[#334155]">|</span>
 
-          <Tooltip title={`水密舱水浸状态：正常`}>
-            <div className="flex items-center gap-1 text-[#10b981]">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span className="font-mono text-[11px]">SAFE</span>
-            </div>
-          </Tooltip>
-
-          <span className="text-[#334155]">|</span>
-
-          <Tooltip title={`动力电池组电压: ${telemetry.batteryVoltage.toFixed(1)}V`}>
-            <div className="flex items-center gap-1 text-[#94a3b8]">
+          <Tooltip title={`动力电池组电压: ${telemetry.batteryVoltage.toFixed(1)}V (4S)`}>
+            <div className="flex items-center gap-1 text-[#94a3b8] whitespace-nowrap shrink-0">
               <BatteryCharging
-                className="w-3.5 h-3.5"
+                className="w-3.5 h-3.5 shrink-0"
                 style={{ color: getBatteryColor(telemetry.battery) }}
               />
               <span
-                className="font-mono font-medium"
+                className="font-mono font-bold whitespace-nowrap"
                 style={{ color: getBatteryColor(telemetry.battery) }}
               >
                 {telemetry.battery}%
@@ -369,41 +376,18 @@ export const Header: React.FC = () => {
           <Tooltip title="紧急切断：立即切断 6 通道推进器动力并释放定深锁定">
             <button
               onClick={emergencyStop}
-              className="px-2.5 py-1 bg-[rgba(239,68,68,0.12)] hover:bg-[rgba(239,68,68,0.25)] text-[#ef4444] border border-[rgba(239,68,68,0.35)] rounded text-xs font-medium flex items-center gap-1.5 transition-all active:scale-95"
+              className="px-2.5 py-1.5 bg-[rgba(239,68,68,0.15)] hover:bg-[rgba(239,68,68,0.28)] text-[#ef4444] border border-[rgba(239,68,68,0.4)] rounded text-xs font-semibold flex items-center gap-1.5 transition-all active:scale-95 shadow-sm whitespace-nowrap shrink-0"
             >
-              <AlertTriangle className="w-3 h-3" />
-              急停
+              <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+              <span className="whitespace-nowrap font-bold">急停</span>
             </button>
           </Tooltip>
         )}
 
-        {/* Quick Demo Dataset / Reset State Pill */}
-        {images.length === 0 ? (
-          <Tooltip title="一键装填 12 帧海床多生境巡检切片与 FBDPN-SwinT 算法推理成果，方便评委快速全盘审查">
-            <button
-              onClick={loadFullDemoDataset}
-              className="px-2.5 py-1 rounded bg-[#12233b] hover:bg-[#1a365d] text-[#38bdf8] border border-[rgba(14,165,233,0.4)] text-[11px] font-medium flex items-center gap-1.5 transition-all shadow-sm active:scale-95"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-[#38bdf8]" />
-              装填全套示范数据
-            </button>
-          </Tooltip>
-        ) : (
-          <Tooltip title="恢复为 ROV 刚下水出航状态 (0 帧)，亲身体验操控定点抓拍与补光复拍">
-            <button
-              onClick={resetToCleanState}
-              className="px-2.5 py-1 rounded bg-[#070d17] hover:bg-[#12233b] text-[#94a3b8] hover:text-[#38bdf8] border border-[rgba(148,163,184,0.2)] text-[11px] font-medium flex items-center gap-1.5 transition-all active:scale-95"
-            >
-              <RotateCcw className="w-3 h-3" />
-              出航初始态 (0 帧)
-            </button>
-          </Tooltip>
-        )}
-
-        {/* Discreet Settings Dropdown */}
+        {/* Discreet Settings Dropdown (Includes dataset load & reset options) */}
         <Dropdown menu={{ items: settingsMenuItems }} placement="bottomRight" trigger={['click']}>
-          <button className="w-7 h-7 rounded bg-[#070d17] border border-[rgba(148,163,184,0.14)] flex items-center justify-center text-[#64748b] hover:text-[#f1f5f9] hover:border-[rgba(148,163,184,0.3)] transition-all">
-            <Settings className="w-3.5 h-3.5" />
+          <button className="w-8 h-8 rounded bg-[#070d17] border border-[rgba(148,163,184,0.18)] flex items-center justify-center text-[#64748b] hover:text-[#f8fafc] hover:border-[rgba(148,163,184,0.35)] transition-all shrink-0">
+            <Settings className="w-3.5 h-3.5 shrink-0" />
           </button>
         </Dropdown>
       </div>

@@ -28,6 +28,10 @@ import {
   Check,
   CheckCheck,
   Filter,
+  ChevronLeft,
+  ChevronRight,
+  ArrowLeft,
+  ArrowRight,
 } from 'lucide-react';
 import { Button, Slider, Tooltip, message, Radio, Tabs } from 'antd';
 
@@ -71,6 +75,8 @@ export const ReviewWorkbenchPage: React.FC = () => {
   const [lockedDetectionIds, setLockedDetectionIds] = useState<string[]>([]);
   const [rightTab, setRightTab] = useState<'objects' | 'inspector'>('objects');
   const [mouseCoord, setMouseCoord] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [queueCollapsed, setQueueCollapsed] = useState(false);
+  const [inspectorCollapsed, setInspectorCollapsed] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -90,13 +96,40 @@ export const ReviewWorkbenchPage: React.FC = () => {
 
   const selectedDetection = activeImg?.detections.find((d) => d.id === selectedDetectionId);
 
+  // Dynamic Fit to screen handler
+  const fitToScreen = React.useCallback(() => {
+    if (containerRef.current) {
+      const cw = containerRef.current.clientWidth - 28;
+      const ch = containerRef.current.clientHeight - 28;
+      if (cw > 100 && ch > 100) {
+        const fitScale = Math.min(cw / 1920, ch / 1080);
+        setScale(Number(Math.max(0.2, fitScale).toFixed(3)));
+        setPan({ x: 0, y: 0 });
+      }
+    }
+  }, []);
+
   // Zoom handlers
-  const handleZoomIn = () => setScale((prev) => Math.min(prev * 1.25, 4));
-  const handleZoomOut = () => setScale((prev) => Math.max(prev / 1.25, 0.4));
+  const handleZoomIn = () => setScale((prev) => Math.min(Number((prev * 1.25).toFixed(3)), 4));
+  const handleZoomOut = () => setScale((prev) => Math.max(Number((prev / 1.25).toFixed(3)), 0.2));
   const handleResetZoom = () => {
-    setScale(1);
-    setPan({ x: 0, y: 0 });
+    fitToScreen();
+    message.info('已自适应画布最佳显示比例');
   };
+
+  // Auto fit on mount and whenever drawers are expanded or collapsed
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fitToScreen();
+    }, 80);
+    return () => clearTimeout(timer);
+  }, [queueCollapsed, inspectorCollapsed, fitToScreen]);
+
+  useEffect(() => {
+    const handleResize = () => fitToScreen();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [fitToScreen]);
 
   // Keyboard shortcut listeners (1-4 change class, Del delete, etc.)
   useEffect(() => {
@@ -314,12 +347,30 @@ export const ReviewWorkbenchPage: React.FC = () => {
           </button>
         </Tooltip>
 
+        <Tooltip title={queueCollapsed && inspectorCollapsed ? "退出巨幕模式 (恢复标准工作台布局)" : "开启巨幕全景模式 (最大化画布屏幕占比)"} placement="right">
+          <button
+            onClick={() => {
+              const target = !(queueCollapsed && inspectorCollapsed);
+              setQueueCollapsed(target);
+              setInspectorCollapsed(target);
+              message.info(target ? '已开启巨幕全景模式 (画布已最大化)' : '已恢复标准工作台布局');
+            }}
+            className={`w-8 h-8 rounded flex items-center justify-center transition-all ${
+              queueCollapsed && inspectorCollapsed
+                ? 'bg-[#0ea5e9] text-white shadow-[0_0_12px_#38bdf8]'
+                : 'text-[#64748b] hover:text-[#f1f5f9]'
+            }`}
+          >
+            <Maximize2 className="w-4 h-4" />
+          </button>
+        </Tooltip>
+
         <Tooltip title="画布重置 100% (Fit)" placement="right">
           <button
             onClick={handleResetZoom}
             className="w-8 h-8 rounded flex items-center justify-center text-[#64748b] hover:text-[#f1f5f9] transition-all"
           >
-            <Maximize2 className="w-4 h-4" />
+            <RotateCcw className="w-4 h-4" />
           </button>
         </Tooltip>
 
@@ -344,15 +395,38 @@ export const ReviewWorkbenchPage: React.FC = () => {
         </Tooltip>
       </div>
 
-      {/* 2. IMAGE QUEUE DRAWER (230px) */}
-      <div className="w-[230px] h-full cockpit-panel p-2.5 flex flex-col shrink-0">
-        <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-[rgba(148,163,184,0.14)]">
-          <span className="font-semibold text-white flex items-center gap-1.5">
-            <Layers className="w-3.5 h-3.5 text-[#38bdf8]" />
-            待复核影像队列
+      {/* 2. IMAGE QUEUE DRAWER (Collapsible, w-[240px] or w-9) */}
+      {queueCollapsed ? (
+        <div
+          onClick={() => setQueueCollapsed(false)}
+          className="w-9 h-full cockpit-panel flex flex-col items-center justify-between py-3 px-1 cursor-pointer hover:border-[rgba(14,165,233,0.5)] text-[#94a3b8] hover:text-[#38bdf8] transition-all shrink-0 bg-[#0b1523] shadow-sm"
+          title="点击展开待复核影像队列"
+        >
+          <Layers className="w-4 h-4 text-[#38bdf8]" />
+          <span className="[writing-mode:vertical-lr] text-xs font-bold tracking-widest text-[#cbd5e1] my-auto py-2">
+            待审队列 ({filteredQueue.length})
           </span>
-          <span className="text-[10px] text-[#64748b] font-mono">{filteredQueue.length} 帧</span>
+          <ChevronRight className="w-4 h-4 text-[#38bdf8]" />
         </div>
+      ) : (
+        <div className="w-[240px] h-full cockpit-panel p-2.5 flex flex-col shrink-0 hud-corner">
+          <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-[rgba(148,163,184,0.18)]">
+            <span className="font-bold text-white flex items-center gap-1.5 text-xs">
+              <Layers className="w-3.5 h-3.5 text-[#38bdf8]" />
+              待复核影像队列
+            </span>
+            <div className="flex items-center gap-1">
+              <span className="text-[10px] text-[#64748b] font-mono font-medium">{filteredQueue.length} 帧</span>
+              <Tooltip title="收起列表，为画布腾出更大屏幕占比">
+                <button
+                  onClick={() => setQueueCollapsed(true)}
+                  className="p-1 rounded hover:bg-[#12233b] text-[#64748b] hover:text-[#38bdf8] transition-all ml-1"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
+              </Tooltip>
+            </div>
+          </div>
 
         {/* Filter Pills */}
         <div className="flex items-center gap-1 mb-2 bg-[#070d17] p-0.5 rounded border border-[rgba(148,163,184,0.12)]">
@@ -428,6 +502,7 @@ export const ReviewWorkbenchPage: React.FC = () => {
           })}
         </div>
       </div>
+      )}
 
       {/* 3. CENTER COLUMN: HIGH-PRECISION CANAVS WORKSPACE (flex-1) */}
       <div className="flex-1 h-full flex flex-col cockpit-panel overflow-hidden relative">
@@ -481,6 +556,27 @@ export const ReviewWorkbenchPage: React.FC = () => {
               />
               <span className="text-white font-mono">{(modelConfig.confidenceThreshold * 100).toFixed(0)}%</span>
             </div>
+
+            <span className="text-[#334155]">|</span>
+
+            {/* Giant Canvas Mode Toggle Button */}
+            <Tooltip title={queueCollapsed && inspectorCollapsed ? "退出巨幕模式 (恢复两侧面板)" : "开启巨幕全景模式 (收起两侧抽屉，最大化画布)"}>
+              <button
+                onClick={() => {
+                  const target = !(queueCollapsed && inspectorCollapsed);
+                  setQueueCollapsed(target);
+                  setInspectorCollapsed(target);
+                }}
+                className={`px-2.5 py-1 rounded text-[11px] font-semibold flex items-center gap-1.5 border transition-all ${
+                  queueCollapsed && inspectorCollapsed
+                    ? 'bg-[#0ea5e9] text-white border-[#38bdf8] shadow-[0_0_10px_rgba(14,165,233,0.5)]'
+                    : 'bg-[#12233b] text-[#cbd5e1] hover:text-[#38bdf8] border-[rgba(148,163,184,0.25)] hover:border-[rgba(14,165,233,0.4)]'
+                }`}
+              >
+                <Maximize2 className="w-3.5 h-3.5" />
+                <span>{queueCollapsed && inspectorCollapsed ? '退出巨幕' : '巨幕全景模式'}</span>
+              </button>
+            </Tooltip>
           </div>
         </div>
 
@@ -603,30 +699,30 @@ export const ReviewWorkbenchPage: React.FC = () => {
                     {/* Tag Label Pill */}
                     <rect
                       x={x}
-                      y={Math.max(0, y - 24)}
-                      width={Math.max(88, w * 0.65)}
-                      height="22"
-                      fill="rgba(11, 21, 35, 0.95)"
+                      y={Math.max(0, y - 26)}
+                      width={Math.max(98, w * 0.7)}
+                      height="24"
+                      fill="rgba(11, 21, 35, 0.96)"
                       stroke={color}
-                      strokeWidth="1"
-                      rx="3"
+                      strokeWidth="1.2"
+                      rx="4"
                     />
                     <text
-                      x={x + 6}
-                      y={Math.max(16, y - 9)}
+                      x={x + 7}
+                      y={Math.max(18, y - 9)}
                       fill="#f8fafc"
-                      fontSize="13"
-                      fontWeight="600"
+                      fontSize="14"
+                      fontWeight="700"
                       fontFamily="sans-serif"
                     >
                       {d.category}
                     </text>
                     <text
-                      x={x + 44}
-                      y={Math.max(16, y - 9)}
+                      x={x + 48}
+                      y={Math.max(18, y - 9)}
                       fill={color}
-                      fontSize="11"
-                      fontWeight="500"
+                      fontSize="12"
+                      fontWeight="600"
                       fontFamily="monospace"
                     >
                       {(d.confidence * 100).toFixed(0)}%
@@ -689,32 +785,53 @@ export const ReviewWorkbenchPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. RIGHT COLUMN: OBJECTS TREE & INSPECTOR (320px) */}
-      <div className="w-[320px] h-full cockpit-panel p-2.5 flex flex-col shrink-0 justify-between">
-        <div className="flex-1 flex flex-col min-h-0">
-          {/* Header Switcher Tabs */}
-          <div className="flex items-center gap-1 pb-2 border-b border-[rgba(148,163,184,0.14)] mb-2">
-            <button
-              onClick={() => setRightTab('objects')}
-              className={`flex-1 py-1 rounded text-xs font-medium text-center transition-all ${
-                rightTab === 'objects'
-                  ? 'bg-[#12233b] text-[#38bdf8] border border-[rgba(14,165,233,0.3)]'
-                  : 'text-[#94a3b8] hover:text-white'
-              }`}
-            >
-              图层对象列表 ({visibleDetections.length})
-            </button>
-            <button
-              onClick={() => setRightTab('inspector')}
-              className={`flex-1 py-1 rounded text-xs font-medium text-center transition-all ${
-                rightTab === 'inspector'
-                  ? 'bg-[#12233b] text-[#38bdf8] border border-[rgba(14,165,233,0.3)]'
-                  : 'text-[#94a3b8] hover:text-white'
-              }`}
-            >
-              属性检查器
-            </button>
-          </div>
+      {/* 4. RIGHT COLUMN: OBJECTS TREE & INSPECTOR (Collapsible, w-[325px] or w-9) */}
+      {inspectorCollapsed ? (
+        <div
+          onClick={() => setInspectorCollapsed(false)}
+          className="w-9 h-full cockpit-panel flex flex-col items-center justify-between py-3 px-1 cursor-pointer hover:border-[rgba(14,165,233,0.5)] text-[#94a3b8] hover:text-[#38bdf8] transition-all shrink-0 bg-[#0b1523] shadow-sm"
+          title="点击展开属性与图层检查器"
+        >
+          <Sliders className="w-4 h-4 text-[#38bdf8]" />
+          <span className="[writing-mode:vertical-lr] text-xs font-bold tracking-widest text-[#cbd5e1] my-auto py-2">
+            图层属性 ({visibleDetections.length})
+          </span>
+          <ChevronLeft className="w-4 h-4 text-[#38bdf8]" />
+        </div>
+      ) : (
+        <div className="w-[325px] h-full cockpit-panel p-2.5 flex flex-col shrink-0 justify-between hud-corner">
+          <div className="flex-1 flex flex-col min-h-0">
+            {/* Header Switcher Tabs with Collapse Button */}
+            <div className="flex items-center gap-1 pb-2 border-b border-[rgba(148,163,184,0.18)] mb-2">
+              <button
+                onClick={() => setRightTab('objects')}
+                className={`flex-1 py-1 rounded text-xs font-semibold text-center transition-all ${
+                  rightTab === 'objects'
+                    ? 'bg-[#12233b] text-[#38bdf8] border border-[rgba(14,165,233,0.4)]'
+                    : 'text-[#94a3b8] hover:text-white'
+                }`}
+              >
+                图层对象 ({visibleDetections.length})
+              </button>
+              <button
+                onClick={() => setRightTab('inspector')}
+                className={`flex-1 py-1 rounded text-xs font-semibold text-center transition-all ${
+                  rightTab === 'inspector'
+                    ? 'bg-[#12233b] text-[#38bdf8] border border-[rgba(14,165,233,0.4)]'
+                    : 'text-[#94a3b8] hover:text-white'
+                }`}
+              >
+                属性检查器
+              </button>
+              <Tooltip title="收起属性栏，为画布腾出更大屏幕占比">
+                <button
+                  onClick={() => setInspectorCollapsed(true)}
+                  className="p-1 rounded hover:bg-[#12233b] text-[#64748b] hover:text-[#38bdf8] transition-all ml-1"
+                >
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </Tooltip>
+            </div>
 
           {/* Tab 1: Objects Tree */}
           {rightTab === 'objects' ? (
@@ -939,6 +1056,7 @@ export const ReviewWorkbenchPage: React.FC = () => {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 };

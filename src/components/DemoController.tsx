@@ -70,7 +70,7 @@ export const DemoController: React.FC = () => {
       title={
         <div className="flex items-center gap-2 text-white">
           <Zap className="w-4 h-4 text-[#00e5ff]" />
-          <span>竞赛评委演示播控中心 (Demo Deck)</span>
+          <span>工况仿真与快速导引台 (Scenario Simulation Deck)</span>
         </div>
       }
       placement="right"
@@ -86,7 +86,7 @@ export const DemoController: React.FC = () => {
         {/* Global Reset */}
         <div className="p-3 bg-[rgba(14,30,56,0.8)] border border-[rgba(0,229,255,0.2)] rounded-lg flex items-center justify-between">
           <div>
-            <div className="font-semibold text-white">重置演示环境</div>
+            <div className="font-semibold text-white">重置仿真环境</div>
             <div className="text-[#94a3b8] text-[11px] mt-0.5">
               恢复初始任务状态、清空临时标记与复核缓存
             </div>
@@ -106,9 +106,9 @@ export const DemoController: React.FC = () => {
         {/* 10-step / 6-phase Jump List */}
         <div>
           <div className="text-[#94a3b8] font-semibold uppercase tracking-wider mb-2.5 flex items-center justify-between">
-            <span>演示主路线快捷导航 (3~5分钟)</span>
+            <span>标准作业流程快速导航索引</span>
             <span className="text-[10px] text-[#00e5ff] bg-[rgba(0,229,255,0.1)] px-1.5 py-0.5 rounded">
-              可独立跳段
+              支持直接跳段
             </span>
           </div>
 
